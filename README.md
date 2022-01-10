@@ -18,13 +18,7 @@ Once the three tables are ready, we applied a function on the **UserDailyAggrega
 During this step, we thought about applying the ***RFM Analysis technique*** to create new variables for each `User ID` such as `Active_Days` (Recency), `sum_Stakes` (Monetary), and `count` (Frequency) on an overall and product's levels.
 Here is an overview of the basetable we got after applying the aggregation functions and merging the datasets together:
 
-```{r echo=FALSE, results='basetable', warning=FALSE}
-library(knitr)
-setwd("C:/Users/warfaoui/OneDrive - IESEG/Desktop/R/R_pro/Group_Project_R_Final_Final/Group_Project_R")
-data <- read.csv("./Data/Basetable.csv")
-kable(data[1:8,c(1:5,13,25:28)],caption="Final DataMart")
-dim(data)
-```
+
 
 After this, we moved to do **segmentation** to assign each customer to a specific cluster based on score we calculated using the RFM values:
 
@@ -37,12 +31,6 @@ where:\
 
 And we ended up by having RFM scores distributed like this:
 
-```{r echo=FALSE, warning=FALSE}
-setwd("C:/Users/warfaoui/OneDrive - IESEG/Desktop/R/R_pro/Group_Project_R_Final_Final/Group_Project_R")
-segements <- read.csv("./Data/Segments.csv")
-summary(segements$RFM_score)
-```
-
 Based on these values, we decided to create four clusters:
 - **Loyalists**: with `RFM_Score` between 430.0 & 343.0
 - **Potential Loyalists**: with `RFM_Score` between 343.0 & 270.5
@@ -51,12 +39,6 @@ Based on these values, we decided to create four clusters:
 
 And we had our customers' distribution like this:
 
-```{r echo=FALSE, warning=FALSE, fig.align='center', fig.height=4}
-library(ggplot2)
-setwd("C:/Users/warfaoui/OneDrive - IESEG/Desktop/R/R_pro/Group_Project_R_Final_Final/Group_Project_R")
-segements <- read.csv("./Data/Segments.csv")
-ggplot(segements) + geom_bar(aes(x = Segment, fill = Segment))+theme(axis.text.x=element_text(angle=35,hjust=1)) +labs(title = "Barplot for Segments of customers")
-```
 
 After we succeeded to have an overview of our customers' segments, we thought about digging deeper by doing **kmeans** clustering for each product inside the overall clusters.\
 Each product's customers were split into four clusters:
@@ -94,20 +76,11 @@ In order to make it more user friendly to explore the data of this basetable, we
 
 - The top 3 products that customers most bet on are: **Sports book fixed-odd (Prod1)**, **Sports book live-action (Prod2)**, and **Poker BossMedia (Prod3)** respectively as shown in the graph below.  
 
-```{r echo=FALSE, warning=FALSE}
-setwd("C:/Users/warfaoui/OneDrive - IESEG/Desktop/R/R_pro/Group_Project_R_Final_Final/Group_Project_R")
-products <- read.csv("./Data/product_count.csv")
-ggplot(products,aes(x = Product, y = Number_of_Visits, fill= Product)) +  geom_col() + ggtitle("Barplot for Product Activity") + coord_flip()
-```
 
 
 -   Based on our segmentation, we can see that most of the existing customers are **promising loyalists** `29%` followed by **Loyalists** `25%`.
 
-```{r echo=FALSE, warning=FALSE}
-setwd("C:/Users/warfaoui/OneDrive - IESEG/Desktop/R/R_pro/Group_Project_R_Final_Final/Group_Project_R")
-segements <- read.csv("./Data/Segments.csv")
-table(segements$Segment)
-```
+
 
 -   The leading products' cluster constructing our overall segments is the **low_value** cluster which groups customers with relatively low RFM *(Recency-Frequency-Total_bets)* values, followed by **medium_value** cluster for customers with RFM vlaues that are around average when compared to the overall values for that product.
 
